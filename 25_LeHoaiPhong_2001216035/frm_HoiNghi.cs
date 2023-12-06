@@ -49,15 +49,14 @@ namespace _25_LeHoaiPhong_2001216035
 
             //load datagridview hoi nghi
             HoiNghi_DAO hncn = new HoiNghi_DAO();
-            showData();
+            showData(hncn.getData());
         }
-        private void showData()
+        private void showData(List<HoiNghi> lhn)
         {
             dataHoiNghi.Rows.Clear();
             dataHoiNghi.Refresh();
             LoaiPhong_DAO lpcn = new LoaiPhong_DAO();
-            HoiNghi_DAO hncn = new HoiNghi_DAO();
-            foreach (var hn in hncn.getData())
+            foreach (var hn in lhn)
             {
                 ; LoaiPhong lp = lpcn.getLoaiPhong(hn.maLoaiPhong);
                 dataHoiNghi.Rows.Add(hn.maHoiNghi, hn.tenHoiNghi, hn.soNguoi, lp.tenLoaiPhong);
@@ -87,12 +86,20 @@ namespace _25_LeHoaiPhong_2001216035
             if(hncn.addData(hn))
             {
                 MessageBox.Show("Thêm thành công!");
-                showData();
+                showData(hncn.getData());
             }
             else
             {
                 MessageBox.Show("Thêm không thành công!");
             }    
+        }
+
+        private void btnFilter_Click(object sender, EventArgs e)
+        {
+            LoaiPhong_DAO lpcn = new LoaiPhong_DAO();
+            HoiNghi_DAO hncn = new HoiNghi_DAO();
+            string idlp = lpcn.getMaLoaiPhong(cbbLoaiPhong.Text).maLoaiPhong;
+            showData(hncn.dataToLoaiPhong(idlp));
         }
     }
 }

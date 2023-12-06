@@ -53,5 +53,35 @@ namespace _25_LeHoaiPhong_2001216035.Objects
             con.Close();
             return true;
         }
+        public List<HoiNghi> dataToLoaiPhong(string maloaiphong)
+        {
+            List<HoiNghi> lhn = new List<HoiNghi>();
+            SqlConnection con = new SqlConnection(constr);
+            SqlDataAdapter da = new SqlDataAdapter();
+            DataTable dt = new DataTable();
+            try
+            {
+                con.Open();
+                da.SelectCommand = new SqlCommand();
+                da.SelectCommand.CommandText = "select * from HoiNghi Where maLoaiPhong = '"+ maloaiphong + "' ";
+                da.SelectCommand.Connection = con;
+                da.Fill(dt);
+                foreach (DataRow row in dt.Rows)
+                {
+                    HoiNghi hn = new HoiNghi();
+                    hn.maHoiNghi = row["maHoiNghi"].ToString();
+                    hn.tenHoiNghi = row["tenHoiNghi"].ToString();
+                    hn.soNguoi = Convert.ToInt32(row["SoNguoi"].ToString());
+                    hn.maLoaiPhong = row["maLoaiPhong"].ToString();
+                    lhn.Add(hn);
+                }
+                con.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            return lhn;
+        }
     }
 }
