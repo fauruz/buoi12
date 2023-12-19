@@ -78,5 +78,46 @@ namespace _25_LeHoaiPhong_2001216035.Objects
             con.Close();
             return (lp);
         }
+        public bool addData(LoaiPhong lp)
+        {
+            SqlConnection con = new SqlConnection(constr);
+            con.Open();
+            string sql = "insert into dbo.LoaiPhong values('" + lp.maLoaiPhong + "',N'" + lp.tenLoaiPhong + "')";
+            SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.ExecuteNonQuery();
+            con.Close();
+            return true;
+        }
+        public bool deleteLoaiPhong(string maloaiphong)
+        {
+            int kt = 0;
+            SqlConnection con = new SqlConnection(constr);
+            con.Open();
+            string sql = "select count(*) from LoaiPhong where maLoaiPhong = '" + maloaiphong + "'";
+            SqlCommand cmd = new SqlCommand(sql, con);
+            kt = (int)cmd.ExecuteScalar();
+            if (kt == 0)
+            {
+                MessageBox.Show("Không tồn tại loại phòng!");
+                return false;
+            }
+            else
+            {
+                try
+                {
+                    string sql1 = "Delete From LoaiPhong where maLoaiPhong = '" + maloaiphong + "'";
+                    SqlCommand cmd1 = new SqlCommand(sql1, con);
+                    cmd1.ExecuteNonQuery();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    return false;
+                }
+            }
+            con.Close();
+            return true;
+        }
     }
 }

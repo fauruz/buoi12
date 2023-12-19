@@ -43,6 +43,25 @@ namespace _25_LeHoaiPhong_2001216035.Objects
             }
             return lhn;
         }
+        public HoiNghi getHoiNghi(string mahoinghi)
+        {
+            HoiNghi hn = new HoiNghi();
+            string sql = "select * from HoiNghi where maHoiNghi = '" + mahoinghi + "'";
+            SqlConnection con = new SqlConnection(constr);
+            SqlCommand cmd = new SqlCommand(sql,con);
+            cmd.CommandType = CommandType.Text;
+            
+            con.Open();
+            SqlDataReader rdr = cmd.ExecuteReader();
+            while(rdr.Read())
+            {
+                hn.maHoiNghi = mahoinghi;
+                hn.tenHoiNghi = rdr.GetValue(1).ToString();
+                hn.soNguoi = Convert.ToInt32(rdr.GetValue(2).ToString());
+                hn.maLoaiPhong = rdr.GetValue(3).ToString();
+            }
+            return hn;
+        }
         public bool addData(HoiNghi hn)
         {
             SqlConnection con = new SqlConnection(constr);
@@ -82,6 +101,37 @@ namespace _25_LeHoaiPhong_2001216035.Objects
                 MessageBox.Show(ex.Message);
             }
             return lhn;
+        }
+        public bool deleteHoiNghi(string mahoinghi)
+        {
+            int kt = 0;
+            SqlConnection con = new SqlConnection(constr);
+            con.Open();
+            string sql = "select count(*) from HoiNghi where maHoiNghi = '" + mahoinghi + "'";
+            SqlCommand cmd = new SqlCommand(sql, con);
+            kt = (int)cmd.ExecuteScalar();
+            if (kt == 0)
+            {
+                MessageBox.Show("Không tồn tại hội nghị!");
+                return false;
+            }
+            else
+            {
+                try
+                {
+                    string sql1 = "Delete From HoiNghi where maHoiNghi = '" + mahoinghi + "'";
+                    SqlCommand cmd1 = new SqlCommand(sql1, con);
+                    cmd1.ExecuteNonQuery();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    return false;
+                }
+            }
+            con.Close();
+            return true;
         }
     }
 }

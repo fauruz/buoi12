@@ -16,7 +16,7 @@ namespace _25_LeHoaiPhong_2001216035
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frm_HoiNghi());
+            Application.Run(new frm_TrangChu());
         }
     }
 }
